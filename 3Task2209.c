@@ -22,29 +22,27 @@ int CopyFile(char* FileName, char* DestPath) {
 		return(-1);
 	}
 	int x=0;
-	
+	size_t done = 0;
 	while (x != 1) {
-			ssize_t read_size=read(fd_read, &buffer,sizeof(buffer));
-			if (read_size == -1)
-			{
-				perror("Read error\n");
-				return(-1);
-			}
-			if (read_size != sizeof(buffer))
-			{
-				x=1;
-			}
-			ssize_t write_size=write(fd_wr, &buffer,read_size);
+		ssize_t read_size=read(fd_read, &buffer,sizeof(buffer));
+		if (read_size == -1)
+		{
+			perror("Read error\n");
+			return(-1);
+		}
+		if (read_size != sizeof(buffer))
+		{
+			x=1;
+		}
+		while (done < read_size) {
+			ssize_t write_size=write(fd_wr, &buffer + done, read_size - done);
 			if (write_size == -1)
 			{
 				perror("Write error\n");
 				return(-1);
 			}
-			if (write_size != read_size)
-			{
-				perror("Writing with error\n");
-				return(-1);
-			}
+			done += write_size;
+		}
 	}
 	close(fd_wr);
 	close(fd_read);
