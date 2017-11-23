@@ -4,17 +4,20 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void Stats(void) {
+void Stats(void) 
+{
 	printf("Current Process ID = %d\n", getpid());
 	printf("Current Process Parent ID = %d\n", getppid());
 	printf("Current Process Session ID = %d\n", getsid(getpid()));
 	printf("Current Process Group ID = %d\n", getpgid(getpid()));
 }
 
-int main(int argc, char **argv)
+int main()
 {
+	int inf;
+	pid_t child_id;
 	Stats();
-	pid_t child_id = fork();
+	child_id = fork();
 	switch (child_id) {
 		case -1 :
 			perror("failde in fork");
@@ -27,7 +30,6 @@ int main(int argc, char **argv)
 		default :
 		printf("Parent process info:\n");
 		Stats();
-		int inf;
 		wait(&inf);
 		printf("Parent process info:\n");
 		Stats();

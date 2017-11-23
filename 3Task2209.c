@@ -8,23 +8,21 @@
 #include <dirent.h>
 
 int CopyFile(char* FileName, char* DestPath) {
-	char buffer[1000] ={0};
+	char buffer[1000] = {0};
 	int fd_read = open(FileName, O_RDONLY, 0700);
-	if (fd_read==-1)
-	{
+	if (fd_read == -1) {
 		perror("Open error\n");
 		return -1;
 	}
-	int fd_wr=open(DestPath, O_WRONLY | O_CREAT | O_TRUNC, 0700);
-	if (fd_wr==-1)
-	{
+	int fd_wr = open(DestPath, O_WRONLY | O_CREAT | O_TRUNC, 0700);
+	if (fd_wr == -1) {
 		perror("Error at opening backup files\n");
 		return(-1);
 	}
-	int x=0;
+	int x = 0;
 	size_t done = 0;
 	while (x != 1) {
-		ssize_t read_size=read(fd_read, &buffer,sizeof(buffer));
+		ssize_t read_size = read(fd_read, &buffer, sizeof(buffer));
 		if (read_size == -1)
 		{
 			perror("Read error\n");
@@ -32,10 +30,10 @@ int CopyFile(char* FileName, char* DestPath) {
 		}
 		if (read_size != sizeof(buffer))
 		{
-			x=1;
+			x = 1;
 		}
-		while (done < read_size) {
-			ssize_t write_size=write(fd_wr, &buffer + done, read_size - done);
+		while (done < (size_t)read_size) {
+			ssize_t write_size = write(fd_wr, &buffer + done, read_size - done);
 			if (write_size == -1)
 			{
 				perror("Write error\n");
@@ -49,7 +47,7 @@ int CopyFile(char* FileName, char* DestPath) {
 	return(0);
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	int dir_fd = open("TestFolder", O_RDONLY | O_DIRECTORY, 0700);
 	if (dir_fd == -1) {
@@ -60,8 +58,8 @@ int main(int argc, char **argv)
 	struct dirent *new;
 	while((new = readdir(dirpoint)) != 0) {
 		printf("%ld - %s [%d]\n", new->d_ino, new->d_name, new->d_type);
-		char path[100]={"TestFolder/"};
-		char dest[100]={"BackUpFolder/"};
+		char path[100] = {"TestFolder/"};
+		char dest[100] = {"BackUpFolder/"};
 		strcat(path, new->d_name);
 		strcat(dest, new->d_name);
 		if (new->d_type == DT_REG) {

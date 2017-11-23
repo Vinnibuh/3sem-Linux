@@ -7,23 +7,17 @@
 #include <sys/stat.h>
 #include <string.h>
 
-/*void Stats(void) {
-	printf("Current Process ID = %d\n", getpid());
-	printf("Current Process Parent ID = %d\n", getppid());
-	printf("Current Process Session ID = %d\n", getsid(getpid()));
-	printf("Current Process Group ID = %d\n", getpgid(getpid()));
-}*/
-
-int main(int argc, char **argv)
+int main()
 {
 	struct mq_attr structure;
 	char mq_name[] = "/testmq";
+	int flag;
 	mqd_t mqdesc = mq_open(mq_name, O_RDONLY | O_CREAT | O_NONBLOCK, 0700);
 	if (mqdesc == -1) {
 		perror("error in open");
 		return(0);
 	}
-	int flag = mq_getattr(mqdesc, &structure);
+	flag = mq_getattr(mqdesc, &structure);
 	if (flag == -1) {
 		perror("error in mq_getattr");
 	} else {
@@ -38,24 +32,3 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-/*Stats();
-	pid_t child_id = fork();
-	switch (child_id) {
-		case -1 :
-			perror("failde in fork");
-			return 1;
-		case 0 :
-			printf("Child process info:\n");
-			Stats();
-			int status = 0; 
-			pid_t id = waitpid(getppid(), &status, 0);
-			printf("%d\n", id);
-			printf("Child process info:\n");
-			Stats();
-			break;
-		default :
-		printf("Parent process info:\n");
-		Stats();
-		sleep(3);
-		exit(1);
-	} */

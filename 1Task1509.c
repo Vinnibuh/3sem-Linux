@@ -5,12 +5,11 @@
 #include <fcntl.h>
 #include <time.h>
 
-int main(int argc, char **argv)
+int main()
 {
 	struct stat structure;
 	int fd=open("FirstTry.txt",O_RDWR | O_CREAT,0700);
-	if (fstat(fd,&structure)==-1)
-	{
+	if (fstat(fd,&structure)==-1) {
 		perror("stat");
 		return(-1);
 	}
