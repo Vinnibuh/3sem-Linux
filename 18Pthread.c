@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <unistd.h>
+#include <signal.h>
 
 void* thr_worker(void* arg) 
 {
@@ -26,6 +27,7 @@ int main()
 		sleep(1);
 		printf("i = %llu\n", (unsigned long long)i);
 	}
+	pthread_kill(worker, SIGKILL);
 	return 0;
 }
 
