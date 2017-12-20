@@ -42,7 +42,7 @@ int main() {
 	//Цикл считывания и записи с lock
 	do {
 		if (fcntl(fd, F_SETLK, &fl) == -1) {
-			if (errno == (EACCES||EAGAIN||EBADF)) {
+			if ((errno == EACCES) || (errno == EAGAIN) ||(errno == EBADF)) {
 				perror("RDLCK\n");
 				continue;
 			}
