@@ -9,7 +9,7 @@
 int main()
 {
 	char buffer[1000];
-	int fd_read, fd_wr, x, meta_flag
+	int fd_read, fd_wr, x, meta_flag;
 	size_t done;
 	ssize_t read_size, write_size;
 	x = 0;
@@ -24,7 +24,7 @@ int main()
 		perror("Error in meta data");
 		return(-1);
 	}
-	const struct timespec times[2] = {{structure.st_atime}, {structure.st_mtime}};
+	const struct timespec times[2] = {{structure.st_atime, 0}, {structure.st_mtime, 0}};
 	if (S_ISREG(structure.st_mode)) {
 		printf("Regular, copying allowed\n");
 		fd_wr = open("BackUp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0700);
